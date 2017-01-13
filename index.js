@@ -1,8 +1,5 @@
 $(document).ready(function() {
-
 //Define variable to use later
-
-$('planets');
 var planets = [
   ['Pluto', 0.06],
   ['Neptune', 1.148],
@@ -18,9 +15,20 @@ var planets = [
 ];   
 
 //Reverse then loop over array to create option elements, and append option elements to select
-
 $($(planets).get().reverse()).each(function(value) {
 	$('<option>').val(this[1]).text(this[0]).appendTo('#planetList');
+	
+});
+
+//Sort the array based on gravity value
+var sortedArray = $(planets).sort(function(a, b) {
+	return a[1]-b[1];
+});
+
+//Add sorted array table values into html table
+$.each(sortedArray, function(index, value) {
+$('#tableBody').append(`<tr><td> ${value[0]} </td><td> ${value[1]}`);
+
 });
 
 // Alternate method to loop over array
@@ -32,10 +40,11 @@ $($(planets).get().reverse()).each(function(value) {
 // $('#planetList').append(newOption);
 // };
 
-
-
 //Create function that is called when button is clicked
 $('#calculateBtn').click(function() {
+
+//Remove any previously appended elements
+$('.spaceWeight').detach();
 
 //Grab user input weight
 var userWeight = $('#weightInput').val();
@@ -50,12 +59,14 @@ var planetName = $('#planetList option:selected').text();
 var spaceWeight = userWeight * planetGravity;
 
 //Create new element and append to div
-newElement = $('<h3 class="">').text("Your weight on " + planetName + " is " + spaceWeight + " lbs.")
+newElement = $('<h3 class="">').text("Your weight on " + planetName + " is " + spaceWeight + " lbs.").addClass('spaceWeight');
 $('#mainDiv').append(newElement);
 
 //Clear the input of previous number
 $('#weightInput').val('');
 	});
+
+
 });
 
 
